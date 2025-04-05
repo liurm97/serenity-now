@@ -47,7 +47,7 @@ export default function LoginForm({ redirectTo = "/" }: LoginFormProps) {
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
-      await signIn(data.email);
+      await signIn(data.email, redirectTo);
       setEmail(data.email);
       setShowOtpInput(true);
       toast({

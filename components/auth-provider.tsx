@@ -8,7 +8,7 @@ type AuthContextType = {
   user: User | null;
   session: Session | null;
   isLoading: boolean;
-  signIn: (email: string) => Promise<void>;
+  signIn: (email: string, redirectPath?: string) => Promise<void>;
   signOut: () => Promise<void>;
   verifyOtp: (email: string, token: string) => Promise<void>;
 };
@@ -69,13 +69,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   // Email OTP sign in
-  const signIn = async (email: string) => {
+  const signIn = async (email: string, redirectPath: string = "/") => {
     setIsLoading(true);
     try {
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
+          emailRedirectTo: `https://serenity-4i3a9m96c-bobby-lius-projects.vercel.app/auth/callback?redirectTo=${encodeURIComponent(
+            redirectPath
+          )}`,
         },
       });
 

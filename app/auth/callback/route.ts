@@ -50,9 +50,12 @@ export async function GET(request: NextRequest) {
 
     // Get redirectTo from query params or default to home
     const redirectTo = requestUrl.searchParams.get("redirectTo") || "/";
-    console.log("hi");
-    // URL to redirect to after sign in
-    return NextResponse.redirect(new URL(redirectTo, requestUrl.origin));
+
+    // Full URL to redirect to after sign in
+    const redirectUrl = new URL(redirectTo, requestUrl.origin);
+    console.log(`[Auth Callback] Redirecting to: ${redirectUrl.toString()}`);
+
+    return NextResponse.redirect(redirectUrl);
   } catch (error) {
     console.error("[Auth Callback] Unexpected error:", error);
     return NextResponse.redirect(new URL("/", request.url));
